@@ -1,3 +1,4 @@
+import datetime
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 
@@ -16,11 +17,13 @@ async def save_user(user_id: int, article: int, session: AsyncSession):
                 select(User).where(User.id_tg_bot == user_id, User.article == article)
             )
             existing_user = existing_user.scalar()
-
+            
+            current_time = datetime.datetime.now()
+            
             if existing_user:
                 existing_user.subscribed = True
             else:
-                new_user = User(id_tg_bot=user_id, article=article, subscribed=True)
+                new_user = User(id_tg_bot=user_id, article=article, subscribed=True, created_at=current_time)
                 session.add(new_user)
 
             await session.commit()

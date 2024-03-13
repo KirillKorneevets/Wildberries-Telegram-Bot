@@ -61,16 +61,13 @@ async def stop_notifications(message: types.Message):
         user_id = message.from_user.id
         async with async_session() as session:
             async with session.begin():
-                user_query = select(User).where(User.id_tg_bot == user_id)
-                result = await session.execute(user_query)
-                user = result.scalars().first()
-
-                if user:
-                    user.subscribed = False
-                    await session.commit()
-                    await message.answer("Вы успешно остановили уведомления.")
-                else:
-                    await message.answer("Вы еще не подписаны на уведомления.")
+                await session.execute(
+                    update(User).
+                    where(User.id_tg_bot == user_id).
+                    values(subscribed=False)
+                )
+                await session.commit()
+                await message.answer("Вы успешно остановили уведомления.")
     except Exception as e:
         await handle_error(message, e)
 

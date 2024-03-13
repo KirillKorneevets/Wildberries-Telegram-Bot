@@ -23,7 +23,7 @@ async def save_user(user_id: int, article: int, session: AsyncSession):
             if existing_user:
                 existing_user.subscribed = True
             else:
-                new_user = User(id_tg_bot=user_id, article=article, subscribed=True, created_at=current_time)
+                new_user = User(id_tg_bot=user_id, article=article, subscribed=False, created_at=current_time)
                 session.add(new_user)
 
             await session.commit()

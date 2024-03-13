@@ -1,8 +1,9 @@
 import asyncio
 import logging
 from os import getenv
-from aiogram import Bot, Dispatcher, types
+from aiogram import Bot, Dispatcher
 from aiogram.enums import ParseMode
+
 from handlers import router
 from subscribed_request import subscribed_task
 
